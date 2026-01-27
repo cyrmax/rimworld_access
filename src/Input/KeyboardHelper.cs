@@ -89,7 +89,9 @@ namespace RimWorldAccess
                 // History tab
                 || HistoryState.IsActive
                 || HistoryStatisticsState.IsActive
-                || HistoryMessagesState.IsActive;
+                || HistoryMessagesState.IsActive
+                // Quality Builder menu
+                || QualityBuilderMenuState.IsActive;
         }
     }
 }

@@ -73,8 +73,10 @@ namespace RimWorldAccess
                 // History tab states
                 HistoryState.IsActive ||
                 HistoryStatisticsState.IsActive ||
-                HistoryMessagesState.IsActive;
-                // Note: TransportPodSelectionState is NOT included - it uses map navigation for cursor movement
+                HistoryMessagesState.IsActive ||
+                // Quality Builder menu
+                QualityBuilderMenuState.IsActive;
+            // Note: TransportPodSelectionState is NOT included - it uses map navigation for cursor movement
         }
 
         /// <summary>
