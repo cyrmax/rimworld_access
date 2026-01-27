@@ -22,6 +22,8 @@ namespace RimWorldAccess
         /// <returns>True if the key was handled, false otherwise</returns>
         public static bool HandleArrowKey(KeyCode key, bool ctrlHeld, bool shiftHeld)
         {
+            MapNavigationPatch.NotifyArrowKeyNavigation();
+
             // Handle Shift+Up/Down for jump mode cycling
             // NOTE: Jump mode cycling now works EVERYWHERE including zone creation mode
             // (previously blocked by incorrect blockJumpModeCycling check)
