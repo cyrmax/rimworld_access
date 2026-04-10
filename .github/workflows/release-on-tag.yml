@@ -1,13 +1,14 @@
-name: Build Dev Release
+name: Publish Release
 
 on:
   push:
-    branches: [master]
+    tags:
+      - "v*"
   workflow_dispatch:
 
 concurrency:
-  group: dev-release
-  cancel-in-progress: true
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -22,7 +23,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
@@ -59,24 +60,15 @@ jobs:
           Write-Host "All expected files present"
 
       - name: Create ZIP
-        run: Compress-Archive -Path release/RimWorldAccess/* -DestinationPath RimWorldAccess-dev.zip
+        run: Compress-Archive -Path release/RimWorldAccess/* -DestinationPath RimWorldAccess.zip
 
-      - name: Update Dev Release
+      - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: dev
-          name: "Dev Build"
-          body: |
-            **Automated development build from master branch.**
-
-            Commit: ${{ github.sha }}
-
-            This release is automatically updated with every push to master.
-            It is intended for experienced players who want to test the very
-            latest features and fixes that might not work properly, or that have
-            not yet been fully documented.
-            For stable releases, see the versioned releases.
-          prerelease: true
-          files: RimWorldAccess-dev.zip
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          files: RimWorldAccess.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
